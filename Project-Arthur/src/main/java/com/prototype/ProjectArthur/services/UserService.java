@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import com.prototype.ProjectArthur.repository.UserRepository;
 import com.prototype.ProjectArthur.DTO.UserDTO;
@@ -29,7 +30,12 @@ public class UserService {
         }
     }
 
+    // Supondo que este método esteja em um @Service ou @Controller
     public UserDTO postUser(User entity) {
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        String encodedPassword = encoder.encode(entity.getPassword());
+        entity.setPassword(encodedPassword);
+
         return convertData(repository.save(entity));
     }
 
