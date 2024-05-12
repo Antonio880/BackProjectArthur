@@ -1,8 +1,8 @@
 package com.prototype.ProjectArthur.controller;
 
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 
-import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +18,6 @@ import com.prototype.ProjectArthur.services.UserService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.util.UriComponentsBuilder;
 
 
 @RestController
@@ -45,10 +44,24 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<UserDTO> postUser(@RequestBody User entity) {
+    public ResponseEntity<UserDTO> postUser(@RequestBody User entity)  {
         UserDTO createdUser = service.postUser(entity);
+/*
+        var authenticationToken = new UsernamePasswordAuthenticationToken(entity.getEmail(), entity.getPassword());
+        System.out.println(authenticationToken);
+        var authentication = manager.authenticate(authenticationToken);
+        System.out.println(authentication);
+        var tokenJWT = tokenService.gerarToken((User) authentication.getPrincipal());
+        System.out.println("TOKEN GERADO NO LOGIN:" + tokenJWT);
 
+        UserResponseDTO response = new UserResponseDTO(, new TokenJWT(tokenJWT));*/
         return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<UserDTO> login(@RequestBody User entity) {
+        UserDTO loginUser = service.loginUser(entity);
+        return ResponseEntity.status(HttpStatus.CREATED).body(loginUser);
     }
 
     @PutMapping("/{id}")
