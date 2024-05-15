@@ -65,6 +65,7 @@ public class UserService {
 
     public UserDTO loginUser(User entity) {
         User user = repository.findByEmailAndPassword(entity.getEmail(), entity.getPassword());
+        System.out.println(user);
         if (user != null) {
             return convertData(user);
         } else {

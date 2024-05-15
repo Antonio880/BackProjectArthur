@@ -61,7 +61,11 @@ public class UserController {
     @PostMapping("/login")
     public ResponseEntity<UserDTO> login(@RequestBody User entity) {
         UserDTO loginUser = service.loginUser(entity);
-        return ResponseEntity.status(HttpStatus.CREATED).body(loginUser);
+        if(loginUser != null) {
+            return ResponseEntity.ok(loginUser);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(loginUser);
+        }
     }
 
     @PutMapping("/{id}")
