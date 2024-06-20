@@ -29,8 +29,12 @@ public class UserController {
 
     @GetMapping
     public ResponseEntity<List<UserDTO>> getUsers() {
-       List<UserDTO> users = service.getAllUsers();
-       return ResponseEntity.ok(users);
+       try{
+           List<UserDTO> users = service.getAllUsers();
+           return ResponseEntity.ok(users);
+       }catch(Exception e){
+           return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+       }
     }
 
     @GetMapping("/{id}")
