@@ -1,3 +1,4 @@
+/*
 package com.prototype.ProjectArthur.config.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,3 +45,4 @@ public class SecurityConfiguration {
         return new BCryptPasswordEncoder();
     }
 }
+*/

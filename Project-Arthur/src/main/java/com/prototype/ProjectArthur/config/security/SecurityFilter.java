@@ -1,3 +1,4 @@
+/*
 package com.prototype.ProjectArthur.config.security;
 
 import com.prototype.ProjectArthur.repository.UserRepository;
@@ -50,3 +51,4 @@ public class SecurityFilter extends OncePerRequestFilter {
     }
 
 }
+*/

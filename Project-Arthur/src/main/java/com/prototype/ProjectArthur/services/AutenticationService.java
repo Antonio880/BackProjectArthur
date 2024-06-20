@@ -1,3 +1,4 @@
+/*
 package com.prototype.ProjectArthur.services;
 
 import com.prototype.ProjectArthur.repository.UserRepository;
@@ -17,3 +18,4 @@ public class AutenticationService implements UserDetailsService {
         return repository.findByUsername(username);
     }
 }
+*/
