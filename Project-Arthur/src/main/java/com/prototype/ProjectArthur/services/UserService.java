@@ -42,7 +42,9 @@ public class UserService {
     public UserDTO updateUser(Long id, User entity) {
         User existingUser = repository.findById(id).orElse(null);
         if (existingUser != null) {
-            entity.setId(id); // Ensure the ID is set correctly
+            entity.setId(id);
+            entity.setEmail(existingUser.getEmail());
+            entity.setRole(existingUser.getRole());
             return convertData(repository.save(entity));
         } else {
             return null;
