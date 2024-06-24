@@ -3,6 +3,7 @@ package com.prototype.ProjectArthur.controller;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
 
+import com.prototype.ProjectArthur.model.Room;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -35,6 +36,11 @@ public class UserController {
        }catch(Exception e){
            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
        }
+    }
+
+    @GetMapping("/{userId}/room")
+    public Room getRoomByStudentId(@PathVariable Long userId) {
+        return service.getRoomByStudentId(userId);
     }
 
     @GetMapping("/{id}")

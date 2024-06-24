@@ -1,27 +1,56 @@
-package com.prototype.ProjectArthur.DTO;
+package com.prototype.ProjectArthur.model;
+
+import jakarta.persistence.*;
 
 import java.util.Map;
 
-public class QuestionDTO {
+@Entity
+public class ExamQuestion {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @ManyToOne
+    @JoinColumn(name = "exam_id")
+    private Exam exam;
+
     private String question;
     private String description;
+
+    @ElementCollection
+    @CollectionTable(name = "exam_question_answers", joinColumns = @JoinColumn(name = "question_id"))
+    @MapKeyColumn(name = "answer_key")
+    @Column(name = "answer_value")
     private Map<String, String> answers;
-    private Map<String, String> correct_answers;
-    private String multiple_correct_answers;
-    private String correct_answer;
+
+    @ElementCollection
+    @CollectionTable(name = "exam_question_correct_answers", joinColumns = @JoinColumn(name = "question_id"))
+    @MapKeyColumn(name = "answer_key")
+    @Column(name = "is_correct")
+    private Map<String, Boolean> correctAnswers;
+
+    private String multipleCorrectAnswers;
+    private String correctAnswer;
     private String explanation;
     private String tip;
     private String category;
     private String difficulty;
 
-    // Getters and Setters
     public Long getId() {
         return id;
     }
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Exam getExam() {
+        return exam;
+    }
+
+    public void setExam(Exam exam) {
+        this.exam = exam;
     }
 
     public String getQuestion() {
@@ -48,28 +77,28 @@ public class QuestionDTO {
         this.answers = answers;
     }
 
-    public String getMultiple_correct_answers() {
-        return multiple_correct_answers;
+    public Map<String, Boolean> getCorrectAnswers() {
+        return correctAnswers;
     }
 
-    public void setMultiple_correct_answers(String multiple_correct_answers) {
-        this.multiple_correct_answers = multiple_correct_answers;
+    public void setCorrectAnswers(Map<String, Boolean> correctAnswers) {
+        this.correctAnswers = correctAnswers;
     }
 
-    public Map<String, String> getCorrect_answers() {
-        return correct_answers;
+    public String getMultipleCorrectAnswers() {
+        return multipleCorrectAnswers;
     }
 
-    public void setCorrect_answers(Map<String, String> correct_answers) {
-        this.correct_answers = correct_answers;
+    public void setMultipleCorrectAnswers(String multipleCorrectAnswers) {
+        this.multipleCorrectAnswers = multipleCorrectAnswers;
     }
 
-    public String getCorrect_answer() {
-        return correct_answer;
+    public String getCorrectAnswer() {
+        return correctAnswer;
     }
 
-    public void setCorrect_answer(String correct_answer) {
-        this.correct_answer = correct_answer;
+    public void setCorrectAnswer(String correctAnswer) {
+        this.correctAnswer = correctAnswer;
     }
 
     public String getExplanation() {

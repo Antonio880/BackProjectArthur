@@ -21,9 +21,9 @@ public class User {
     private String username;
     private String password;
     private String role;
-    @ManyToMany(mappedBy = "students")
-    private Set<Room> rooms;
-
+    @ManyToOne
+    @JoinColumn(name = "room_id")
+    private Room room;
     public User() {}
     
     public User(Long id, String email, String username, String password, String role) {
@@ -32,6 +32,14 @@ public class User {
         this.username = username;
         this.password = password;
         this.role = role;
+    }
+
+    public Room getRoom() {
+        return room;
+    }
+
+    public void setRoom(Room room) {
+        this.room = room;
     }
 
     public Long getId() {

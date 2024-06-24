@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import com.prototype.ProjectArthur.model.Room;
 /*import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;*/
 
 import com.prototype.ProjectArthur.repository.UserRepository;
@@ -13,11 +14,11 @@ import com.prototype.ProjectArthur.model.User;
 
 @Service
 public class UserService {
-    
+
     @Autowired
     private UserRepository repository;
 
-    public List<UserDTO> getAllUsers(){
+    public List<UserDTO> getAllUsers() {
         return convertDataToDTOs(repository.findAll());
     }
 
@@ -30,12 +31,7 @@ public class UserService {
         }
     }
 
-    // Supondo que este método esteja em um @Service ou @Controller
     public UserDTO postUser(User entity) {
-        /*BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-        String encodedPassword = encoder.encode(entity.getPassword());
-        entity.setPassword(encodedPassword);*/
-
         return convertData(repository.save(entity));
     }
 
@@ -43,12 +39,16 @@ public class UserService {
         User existingUser = repository.findById(id).orElse(null);
         if (existingUser != null) {
             entity.setId(id);
-            entity.setEmail(existingUser.getEmail());
             entity.setRole(existingUser.getRole());
+            entity.setRoom(existingUser.getRoom());
             return convertData(repository.save(entity));
         } else {
             return null;
         }
+    }
+
+    public Room getRoomByStudentId(Long userId) {
+        return repository.findRoomByUserId(userId);
     }
 
     public void deleteUser(Long id) {
@@ -62,12 +62,12 @@ public class UserService {
     }
 
     private UserDTO convertData(User user) {
-        return new UserDTO(user.getId(), user.getEmail(), user.getUsername(), user.getPassword(), user.getRole());
+        Long roomId = user.getRoom() != null ? user.getRoom().getId() : null;
+        return new UserDTO(user.getId(), user.getEmail(), user.getUsername(), user.getPassword(), user.getRole(), roomId);
     }
 
     public UserDTO loginUser(User entity) {
         User user = repository.findByEmailAndPassword(entity.getEmail(), entity.getPassword());
-        System.out.println(user);
         if (user != null) {
             return convertData(user);
         } else {

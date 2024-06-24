@@ -8,23 +8,16 @@ public class EntifyDTOMapper {
     public static <E, D> D convertToDTO(E entity, Class<D> dtoClass) {
         try {
             D dto = dtoClass.getDeclaredConstructor().newInstance();
-            Field[] entityFields = entity.getClass().getDeclaredFields();
-            Field[] dtoFields = dtoClass.getDeclaredFields();
-
-            List<String> entityFieldNames = Arrays.stream(entityFields)
-                    .map(Field::getName)
-                    .collect(Collectors.toList());
-
-            for (Field dtoField : dtoFields) {
-                String fieldName = dtoField.getName();
-                if (entityFieldNames.contains(fieldName)) {
-                    Field entityField = entity.getClass().getDeclaredField(fieldName);
-                    entityField.setAccessible(true);
-                    dtoField.setAccessible(true);
-                    dtoField.set(dto, entityField.get(entity));
+            for (Field entityField : entity.getClass().getDeclaredFields()) {
+                entityField.setAccessible(true);
+                Object value = entityField.get(entity);
+                for (Field dtoField : dtoClass.getDeclaredFields()) {
+                    if (dtoField.getName().equals(entityField.getName())) {
+                        dtoField.setAccessible(true);
+                        dtoField.set(dto, value);
+                    }
                 }
             }
-
             return dto;
         } catch (Exception e) {
             e.printStackTrace();

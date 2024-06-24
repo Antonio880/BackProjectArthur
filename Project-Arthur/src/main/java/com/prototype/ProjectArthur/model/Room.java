@@ -15,16 +15,19 @@ public class Room {
     @JoinColumn(name = "created_by_id")
     private User createdBy;
 
-    @ManyToMany
-    @JoinTable(
-            name = "room_students",
-            joinColumns = @JoinColumn(name = "room_id"),
-            inverseJoinColumns = @JoinColumn(name = "user_id")
-    )
-    private Set<User> students;
+    @OneToMany(mappedBy = "room")
+    private Set<User> users;
 
     @OneToMany(mappedBy = "room", cascade = CascadeType.ALL)
     private Set<Exam> exams;
+
+    public Room() {}
+
+    public Room(Integer serie, String curso, User createdBy) {
+        this.serie = serie;
+        this.curso = curso;
+        this.createdBy = createdBy;
+    }
 
     public String getCurso() {
         return curso;
@@ -59,11 +62,11 @@ public class Room {
     }
 
     public Set<User> getStudents() {
-        return students;
+        return users;
     }
 
     public void setStudents(Set<User> students) {
-        this.students = students;
+        this.users = students;
     }
 
     public Set<Exam> getExams() {
